@@ -3,7 +3,6 @@ export const formatPrice = (number) => {
     style: "currency",
     currency: "USD"
   }).format(number / 100);
-  return 
 }
 
 export const getUniqueValues = () => {}
