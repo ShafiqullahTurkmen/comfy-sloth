@@ -25,8 +25,6 @@ const Filters = () => {
   const companies = getUniqueValues(all_products, "company");
   const colors = getUniqueValues(all_products, "colors");
 
-  console.log({categories, companies, colors});
-
   return <Wrapper>
     <div className="content">
       <form onSubmit={e => e.preventDefault()}>
@@ -42,6 +40,27 @@ const Filters = () => {
           />
         </div>
         {/* End Search input */}
+        {/* Categories */}
+        <div className="form-control">
+          <h5>category</h5>
+          <div>
+            {
+              categories.map((c, i) => (
+                <button
+                  key={i}
+                  onClick={updateFilters}
+                  type="button"
+                  name="category"
+                  className={`${category === c.toLowerCase() ? "active" : null}`}
+                >
+                  {c}
+                </button>
+              ))
+            }
+          </div>
+        </div>
+        {/* End of Categories */}
+
       </form>
     </div>
   </Wrapper>
