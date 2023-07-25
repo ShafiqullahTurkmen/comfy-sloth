@@ -22,7 +22,7 @@ const CartContent = () => {
       <button
         type="button"
         className="link-btn clear-btn"
-        onChange={clearCart}
+        onClick={clearCart}
       >
         clear shopping cart
       </button>
