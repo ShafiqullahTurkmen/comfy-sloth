@@ -38,7 +38,7 @@ const CheckoutForm = () => {
         "::placeholder": {
           color: "#32325d",
         },
-      },
+      }, 
       invalid: {
         color: "#fa755a",
         iconColor: "#fa755a",
@@ -47,7 +47,14 @@ const CheckoutForm = () => {
   };
 
   const createPaymentIntent = async () => {
-    console.log("Hello from stripe checkout");
+    try {
+      const data = await axios.post(
+        "/.netlify/functions/create-payment-intent",
+        JSON.stringify({ cart, shipping_fee, total_amount })
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -55,39 +62,41 @@ const CheckoutForm = () => {
     // eslint-disable-next-line
   }, []);
 
-  const handleChange = async (event) => { };
-  const handleSubmit = async (ev) => { };
+  const handleChange = async (event) => {};
+  const handleSubmit = async (ev) => {};
 
-  return <div>
-    <form id="payment-form" onSubmit={handleSubmit}>
-      <CardElement
-        id="card-element"
-        options={cardStyle}
-        onChange={handleChange}
-      />
-      <button disabled={processing || disabled || succeeded} id="submit">
-        <span id="button-text">
-          {
-            processing ? <div className="spinner" id="spinner"></div> : "Pay"
-          }
-        </span>
-      </button>
+  return (
+    <div>
+      <form id="payment-form" onSubmit={handleSubmit}>
+        <CardElement
+          id="card-element"
+          options={cardStyle}
+          onChange={handleChange}
+        />
+        <button disabled={processing || disabled || succeeded} id="submit">
+          <span id="button-text">
+            {processing ? <div className="spinner" id="spinner"></div> : "Pay"}
+          </span>
+        </button>
 
-      {/* Show any error that happens when processing the payment */}
-      {
-        error && <div className="card-error" role="alert">{error}</div>
-      }
+        {/* Show any error that happens when processing the payment */}
+        {error && (
+          <div className="card-error" role="alert">
+            {error}
+          </div>
+        )}
 
-      {/* Show a success message upon completion */}
-      <p className={succeeded ? "result-message" : "result-message hidden"}>
-        Payment Succedded, see the result in your
-        <a href={"https://dashboard.stripe.com/test/payments"}>
-          Stripe dashboard.
-        </a>
-        Refresh the page to pay again
-      </p>
-    </form>
-  </div>;
+        {/* Show a success message upon completion */}
+        <p className={succeeded ? "result-message" : "result-message hidden"}>
+          Payment Succedded, see the result in your
+          <a href={"https://dashboard.stripe.com/test/payments"}>
+            Stripe dashboard.
+          </a>
+          Refresh the page to pay again
+        </p>
+      </form>
+    </div>
+  );
 };
 
 const StripeCheckout = () => {
