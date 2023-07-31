@@ -38,7 +38,7 @@ const CheckoutForm = () => {
         "::placeholder": {
           color: "#32325d",
         },
-      }, 
+      },
       invalid: {
         color: "#fa755a",
         iconColor: "#fa755a",
@@ -48,12 +48,13 @@ const CheckoutForm = () => {
 
   const createPaymentIntent = async () => {
     try {
-      const data = await axios.post(
+      const { data } = await axios.post(
         "/.netlify/functions/create-payment-intent",
         JSON.stringify({ cart, shipping_fee, total_amount })
       );
+      setClientSecret(data.clientSecret);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
